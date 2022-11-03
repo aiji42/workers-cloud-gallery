@@ -23,7 +23,10 @@ export default component$(() => {
 				>
 					gallery
 				</a>
-				<FragmentPlaceholder name="gallery" />
+				<FragmentPlaceholder
+					name="gallery"
+					cacheConfig={{ maxAge: 60, revalidate: 10 }}
+				/>
 			</div>
 		</div>
 	);

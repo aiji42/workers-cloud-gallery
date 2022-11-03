@@ -1,23 +1,34 @@
 import { component$, SSRStream, useEnvData } from "@builder.io/qwik";
 
-export const FragmentPlaceholder = component$(({ name }: { name: string }) => {
-	const env = useEnvData<Record<string, unknown>>("env")!;
-	const request = useEnvData<Request>("request")!;
-	const decoder = new TextDecoder();
-	return (
-		<SSRStream>
-			{async (streamWriter) => {
-				const fragment = await fetchFragment(env, name, request);
-				const reader = fragment.getReader();
-				let fragmentChunk = await reader.read();
-				while (!fragmentChunk.done) {
-					streamWriter.write(decoder.decode(fragmentChunk.value));
-					fragmentChunk = await reader.read();
-				}
-			}}
-		</SSRStream>
-	);
-});
+type CacheConfig = { maxAge: number; revalidate: number };
+
+export const FragmentPlaceholder = component$(
+	({ name, cacheConfig }: { name: string; cacheConfig?: CacheConfig }) => {
+		const env = useEnvData<Record<string, unknown>>("env")!;
+		const request = useEnvData<Request>("request")!;
+		const context = useEnvData<ExecutionContext>("context")!;
+		const decoder = new TextDecoder();
+		return (
+			<SSRStream>
+				{async (streamWriter) => {
+					const fragment = await fetchFragment(
+						env,
+						name,
+						request,
+						context,
+						cacheConfig
+					);
+					const reader = fragment.getReader();
+					let fragmentChunk = await reader.read();
+					while (!fragmentChunk.done) {
+						streamWriter.write(decoder.decode(fragmentChunk.value));
+						fragmentChunk = await reader.read();
+					}
+				}}
+			</SSRStream>
+		);
+	}
+);
 
 /**
  * Attempt to get an asset hosted by a fragment service.
@@ -47,7 +58,9 @@ export async function tryGetFragmentAsset(
 export async function fetchFragment(
 	env: Record<string, unknown>,
 	fragmentName: string,
-	request: Request
+	request: Request,
+	context: ExecutionContext,
+	cacheConfig?: CacheConfig
 ) {
 	const service = env[fragmentName];
 	if (!isFetcher(service)) {
@@ -57,13 +70,80 @@ export async function fetchFragment(
 	}
 	const url = new URL(request.url);
 	url.searchParams.set("base", `/_fragment/${fragmentName}/`);
-	const response = await service.fetch(new Request(url, request));
-	if (response.body === null) {
-		throw new Error(`Response from "${fragmentName}" request is null.`);
+	const newRequest = new Request(url, request);
+	const [cache, stale] = await restore(newRequest, env, context, cacheConfig);
+
+	if (cache && !stale) return cache;
+
+	if (!cache) {
+		const response = await service.fetch(newRequest);
+		const cloned = response.clone();
+		if (response.body === null || cloned.body === null) {
+			throw new Error(`Response from "${fragmentName}" request is null.`);
+		}
+
+		context.waitUntil(store(newRequest, cloned.body, env, cacheConfig));
+		return response.body;
 	}
-	return response.body;
+
+	// existing cache but it is stale
+	context.waitUntil(
+		(async () => {
+			const response = await service.fetch(newRequest);
+			if (response.body === null) {
+				throw new Error(`Response from "${fragmentName}" request is null.`);
+			}
+			return store(newRequest, response.body, env, cacheConfig);
+		})()
+	);
+	return cache;
 }
 
 function isFetcher(obj: unknown): obj is Fetcher {
 	return Boolean((obj as Fetcher).fetch);
+}
+
+function assertsKVNamespace(obj: unknown): asserts obj is KVNamespace {
+	if (!(obj as KVNamespace).get) {
+		throw new Error(`create cache store KV.`);
+	}
+}
+
+async function restore(
+	request: Request,
+	env: Record<string, unknown>,
+	context: ExecutionContext,
+	cacheConfig?: CacheConfig
+): Promise<[ReadableStream | null, boolean]> {
+	if (!cacheConfig) return [null, true];
+	const cacheStore = env["CACHE_STORE"];
+	assertsKVNamespace(cacheStore);
+	const cache = await cacheStore.getWithMetadata<{ expire: number }>(
+		request.url,
+		{
+			type: "stream",
+		}
+	);
+	if (!cache.value) return [null, true];
+
+	const stale = Number(new Date()) > (cache.metadata?.expire ?? 0);
+	return [cache.value, stale];
+}
+
+async function store(
+	request: Request,
+	responseBody: ReadableStream,
+	env: Record<string, unknown>,
+	cacheConfig?: CacheConfig
+) {
+	if (!cacheConfig) return;
+	const cacheStore = env["CACHE_STORE"];
+	assertsKVNamespace(cacheStore);
+
+	return cacheStore.put(request.url, responseBody, {
+		metadata: {
+			expire: Number(new Date()) + cacheConfig.revalidate * 1000,
+		},
+		expirationTtl: cacheConfig.maxAge,
+	});
 }

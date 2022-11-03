@@ -5,7 +5,8 @@ import Body from "./root";
 export default {
 	async fetch(
 		request: Request,
-		env: Record<string, unknown>
+		env: Record<string, unknown>,
+		context: ExecutionContext
 	): Promise<Response> {
 		// Requests for assets hosted by a fragment service must be proxied through to the client.
 		const asset = await tryGetFragmentAsset(env, request);
@@ -13,6 +14,6 @@ export default {
 			return asset;
 		}
 		// Otherwise SSR the application injecting any fragments into the response stream.
-		return renderResponse(request, env, <Body />, manifest, "div");
+		return renderResponse(request, env, context, <Body />, manifest, "div");
 	},
 };

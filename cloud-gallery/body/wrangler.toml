@@ -25,3 +25,8 @@ service = "cloud-gallery-gallery"
 [[services]]
 binding = "filter"
 service = "cloud-gallery-filter"
+
+[[kv_namespaces]]
+binding = "CACHE_STORE"
+id = "d668c3d5a8574989a430b0a8c936a498"
+preview_id = "c8576c95bed244998baae70a763ea625"
