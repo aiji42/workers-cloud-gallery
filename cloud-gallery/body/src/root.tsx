@@ -7,8 +7,6 @@ export default component$(() => {
 	useStylesScoped$(styles);
 	const cache = getCookie("fragment-cache");
 
-	console.log({ cache });
-
 	return (
 		<div class="content">
 			<div class="filter-fragment">
@@ -20,6 +18,12 @@ export default component$(() => {
 				</a>
 				<FragmentPlaceholder name="filter" />
 			</div>
+			<FragmentPlaceholder
+				name="react-gallery"
+				cacheConfig={
+					cache === "true" ? { maxAge: 60, revalidate: 10 } : undefined
+				}
+			/>
 			<div class="gallery-fragment">
 				<a
 					href="https://cloud-gallery-gallery.web-experiments.workers.dev/"
