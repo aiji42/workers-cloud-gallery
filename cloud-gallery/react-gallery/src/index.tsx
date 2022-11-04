@@ -7,7 +7,7 @@ const cookiesPrefix = "multi_worker_demo__";
 
 export default {
   async fetch(request: Request): Promise<Response> {
-    const filter = new URL(request.url).searchParams.get("filter");
+    const filter = new URL(request.url).searchParams.get("tag");
     const cookieString = request.headers.get("cookie") ?? "";
     const cookie = parse(cookieString);
     const delay = cookie[`${cookiesPrefix}delay`] ?? null;
