@@ -1,37 +1,20 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { renderToReadableStream } from "react-dom/server";
+import { Gallery } from "~/componnts/Gallery";
+import { parse } from "cookie";
 
-const DELAY = 2000;
-let done = false;
-
-const Component: React.FC = () => {
-  if (done) {
-    done = false;
-    return (
-      <p>
-        <b>Hello World!!</b>
-      </p>
-    );
-  }
-  throw new Promise((resolve) =>
-    setTimeout(() => {
-      done = true;
-      resolve(true);
-    }, DELAY)
-  );
-};
+const cookiesPrefix = "multi_worker_demo__";
 
 export default {
-  async fetch(
-    request: Request,
-    env: Record<string, unknown>,
-    context: ExecutionContext
-  ): Promise<Response> {
+  async fetch(request: Request): Promise<Response> {
+    const filter = new URL(request.url).searchParams.get("filter");
+    const cookieString = request.headers.get("cookie") ?? "";
+    const cookie = parse(cookieString);
+    const delay = cookie[`${cookiesPrefix}delay`] ?? null;
+
     const stream = await renderToReadableStream(
       <div>
-        <Suspense fallback={<p>Loading...</p>}>
-          <Component />
-        </Suspense>
+        <Gallery delay={delay ? Number(delay) : 0} filter={filter} />
       </div>
     );
     return new Response(stream);
