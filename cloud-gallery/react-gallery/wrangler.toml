@@ -2,6 +2,6 @@ name = "cloud-gallery-react-gallery"
 main = "src/index.tsx"
 compatibility_date = "2022-11-04"
 compatibility_flags = [
-	"streams_enable_constructors",
-	"transformstream_enable_standard_constructor"
+  "streams_enable_constructors",
+  "transformstream_enable_standard_constructor"
 ]
