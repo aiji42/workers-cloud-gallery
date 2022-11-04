@@ -1,9 +1,13 @@
 import { component$, useStylesScoped$ } from "@builder.io/qwik";
 import { FragmentPlaceholder } from "helpers";
 import styles from "./Body.css?inline";
+import { getCookie } from "helpers";
 
 export default component$(() => {
 	useStylesScoped$(styles);
+	const cache = getCookie("fragment-cache");
+
+	console.log({ cache });
 
 	return (
 		<div class="content">
@@ -25,7 +29,9 @@ export default component$(() => {
 				</a>
 				<FragmentPlaceholder
 					name="gallery"
-					cacheConfig={{ maxAge: 60, revalidate: 10 }}
+					cacheConfig={
+						cache === "true" ? { maxAge: 60, revalidate: 10 } : undefined
+					}
 				/>
 			</div>
 		</div>

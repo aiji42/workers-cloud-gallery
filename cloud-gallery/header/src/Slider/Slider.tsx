@@ -41,11 +41,25 @@ export const Slider = component$(() => {
 		toggleSeams(checked);
 	});
 
-	const seamsRef = useRef();
+	const seamsRef = useRef<HTMLInputElement>();
 	useClientEffect$(() => {
 		if (getCookie("seams") === "true") {
-			(seamsRef.current as HTMLInputElement).checked = true;
+			if (seamsRef.current) seamsRef.current.checked = true;
 			toggleSeams(true);
+		}
+	});
+
+	const handleFragmentCache$ = $((e: Event) => {
+		saveCookie(
+			"fragment-cache",
+			JSON.stringify((e.target as HTMLInputElement).checked)
+		);
+	});
+
+	const cacheRef = useRef<HTMLInputElement>();
+	useClientEffect$(() => {
+		if (getCookie("fragment-cache") === "true") {
+			if (cacheRef.current) cacheRef.current.checked = true;
 		}
 	});
 
@@ -72,7 +86,15 @@ export const Slider = component$(() => {
 			</div>
 
 			<div class="seam-options-container">
-				<label class="label" for="enable-seams-input">
+				<label className="label">
+					<input
+						ref={cacheRef}
+						type="checkbox"
+						onChange$={handleFragmentCache$}
+					/>
+					Activate fragment cache
+				</label>
+				<label className="label">
 					<input
 						ref={seamsRef}
 						type="checkbox"
