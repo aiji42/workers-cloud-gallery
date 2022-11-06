@@ -13,7 +13,7 @@ export const Gallery = ({
   const Lag = makeLag();
 
   return (
-    <div className="container">
+    <div className="gallery-container">
       <div className="spinner-container">
         <span id="spinner" className="spinner"></span>
       </div>
