@@ -6,7 +6,7 @@
     "prebuild": "npm run -w helpers build",
     "build": "vite build",
     "start": "npx wrangler dev --local",
-    "deploy": "npx wrangler publish",
+    "deploy": "BASE_URL=/_fragment/react-gallery/ npx wrangler publish",
     "lint": "eslint \"{pages,renderer,worker}/**/*.ts*\"",
     "check-format": "prettier --check --ignore-path=../.prettierignore .",
     "format": "prettier --write --ignore-path=../.prettierignore .",

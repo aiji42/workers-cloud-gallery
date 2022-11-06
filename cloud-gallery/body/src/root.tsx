@@ -11,7 +11,7 @@ export default component$(() => {
     <div class="content">
       <div class="filter-fragment">
         <a
-          href="https://cloud-gallery-filter.web-experiments.workers.dev/"
+          href="https://cloud-gallery-filter.aiji422990.workers.dev/"
           class="seam-link"
         >
           filter
@@ -20,10 +20,10 @@ export default component$(() => {
       </div>
       <div class="gallery-fragment">
         <a
-          href="https://cloud-gallery-gallery.web-experiments.workers.dev/"
+          href="https://cloud-gallery-react-gallery.aiji422990.workers.dev/"
           class="seam-link"
         >
-          gallery
+          react-gallery
         </a>
         <FragmentPlaceholder
           name="react-gallery"
