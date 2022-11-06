@@ -28,7 +28,7 @@ export default component$(() => {
         <FragmentPlaceholder
           name="react-gallery"
           cacheConfig={
-            cache === "true" ? { maxAge: 60, revalidate: 10 } : undefined
+            cache === "true" ? { maxAge: 3600 * 24, revalidate: 60 } : undefined
           }
         />
         {/*<FragmentPlaceholder*/}
