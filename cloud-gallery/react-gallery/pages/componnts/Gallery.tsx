@@ -48,7 +48,7 @@ const makeLag = () => {
     if (loading)
       throw new Promise((r) => {
         setTimeout(() => {
-          loading = true;
+          loading = false;
           r(true);
         }, props.delay * 1000);
       });
