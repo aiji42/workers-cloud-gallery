@@ -1,0 +1,13 @@
+main="./worker/index.ts"
+name = "cloud-gallery-react-gallery"
+compatibility_flags = ["streams_enable_constructors"]
+compatibility_date = "2022-11-05"
+workers_dev = true
+node_compat = true
+
+[assets]
+bucket = "./dist/client"
+
+[build]
+command = "npm run build"
+watch_dir = ["pages", "renderer"]

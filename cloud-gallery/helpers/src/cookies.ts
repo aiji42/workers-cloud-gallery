@@ -39,3 +39,17 @@ export function getCookie(name: string) {
   const cookie = parse(cookieString);
   return cookie[`${cookiesPrefix}${name}`] ?? null;
 }
+
+export function getCookieForReact(name: string, request: Request) {
+  let cookieString;
+
+  if (isBrowser()) {
+    cookieString = document.cookie || "";
+  } else {
+    const cookie = request.headers.get("cookie");
+    cookieString = cookie ?? "";
+  }
+
+  const cookie = parse(cookieString);
+  return cookie[`${cookiesPrefix}${name}`] ?? null;
+}
