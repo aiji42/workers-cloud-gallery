@@ -1,9 +1,9 @@
 {
-	"extends": "../tsconfig.json",
-	"compilerOptions": {
-		"declarationDir": "lib-types"
-	},
-	"declaration": true,
-	"outDir": "lib-types",
-	"include": ["src"]
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "declarationDir": "lib-types"
+  },
+  "declaration": true,
+  "outDir": "lib-types",
+  "include": ["src"]
 }
