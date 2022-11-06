@@ -19,7 +19,7 @@ export default () => {
         <div class="page-container">
           <div class="header-fragment">
             <a
-              href="https://cloud-gallery-header.web-experiments.workers.dev/"
+              href="https://cloud-gallery-header.aiji422990.workers.dev/"
               class="seam-link"
             >
               header
@@ -28,7 +28,7 @@ export default () => {
           </div>
           <div class="body-fragment">
             <a
-              href="https://cloud-gallery-body.web-experiments.workers.dev/"
+              href="https://cloud-gallery-body.aiji422990.workers.dev/"
               class="seam-link"
             >
               body
@@ -37,7 +37,7 @@ export default () => {
           </div>
           <div class="footer-fragment">
             <a
-              href="https://cloud-gallery-footer.web-experiments.workers.dev/"
+              href="https://cloud-gallery-footer.aiji422990.workers.dev/"
               class="seam-link"
             >
               footer

@@ -63,10 +63,8 @@ const GalleryItem = (props: { src: string; tags: string[] }) => {
       <img
         className="gallery-image"
         alt="cloud picture"
-        src={
-          "https://cloud-gallery.web-experiments.workers.dev/_fragment/gallery/" +
-          props.src
-        }
+        // @ts-ignore
+        src={`${import.meta.env.BASE_URL}${props.src}`}
         width={300}
         height={450}
       />

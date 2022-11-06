@@ -7,7 +7,10 @@ async function handleFetch(
   context: ExecutionContext
 ) {
   const url = new URL(request.url);
-  url.pathname = url.pathname.replace(/^\//, "/_fragment/react-gallery/");
+  url.pathname = url.pathname.replace(
+    /^\//,
+    url.searchParams.get("base") ?? "/"
+  );
   const proxyReq = new Request(url, request);
 
   if (!isAssetUrl(proxyReq)) {
