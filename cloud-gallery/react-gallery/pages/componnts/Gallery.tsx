@@ -1,4 +1,4 @@
-import React, { ReactNode, Suspense, useId } from "react";
+import React, { ReactNode, Suspense } from "react";
 import "./Gallery.css";
 import { images } from "../../../constants";
 
