@@ -6,8 +6,12 @@ async function handleFetch(
   env: Record<string, unknown>,
   context: ExecutionContext
 ) {
-  if (!isAssetUrl(request)) {
-    const response = await handleSsr(request, env, context);
+  const url = new URL(request.url);
+  url.pathname = url.pathname.replace(/^\//, "/_fragment/react-gallery/");
+  const proxyReq = new Request(url, request);
+
+  if (!isAssetUrl(proxyReq)) {
+    const response = await handleSsr(proxyReq, env, context);
     if (response !== null) return response;
   }
   return handleStaticAssets(request, env, context);
@@ -15,7 +19,7 @@ async function handleFetch(
 
 function isAssetUrl(request: Request) {
   const { pathname } = new URL(request.url);
-  return pathname.startsWith("/some/base-url/assets/");
+  return pathname.includes("/assets/");
 }
 
 export default {

@@ -7,7 +7,6 @@ export const handleSsr = async (
 ) => {
   const pageContextInit = {
     urlOriginal: request.url,
-    fetch: (...args: Parameters<typeof fetch>) => fetch(...args),
     request,
     env,
     context,

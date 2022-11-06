@@ -25,6 +25,9 @@ service = "cloud-gallery-header"
 binding = "gallery"
 service = "cloud-gallery-gallery"
 [[services]]
+binding = "react-gallery"
+service = "cloud-gallery-react-gallery"
+[[services]]
 binding = "filter"
 service = "cloud-gallery-filter"
 [[services]]
