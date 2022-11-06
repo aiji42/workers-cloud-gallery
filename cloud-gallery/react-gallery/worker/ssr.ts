@@ -1,10 +1,16 @@
 import { renderPage } from "vite-plugin-ssr";
 
-export const handleSsr = async (url: string, userAgent: string) => {
+export const handleSsr = async (
+  request: Request,
+  env: Record<string, unknown>,
+  context: ExecutionContext
+) => {
   const pageContextInit = {
-    urlOriginal: url,
+    urlOriginal: request.url,
     fetch: (...args: Parameters<typeof fetch>) => fetch(...args),
-    userAgent, // need?
+    request,
+    env,
+    context,
   };
   const pageContext = await renderPage(pageContextInit);
   const { httpResponse } = pageContext;

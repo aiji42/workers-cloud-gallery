@@ -6,19 +6,16 @@ async function handleFetch(
   env: Record<string, unknown>,
   context: ExecutionContext
 ) {
-  const url = request.url;
-  if (!isAssetUrl(url)) {
-    const userAgent = request.headers.get("User-Agent") ?? "";
-    console.log("ua", userAgent);
-    const response = await handleSsr(url, userAgent);
+  if (!isAssetUrl(request)) {
+    const response = await handleSsr(request, env, context);
     if (response !== null) return response;
   }
   return handleStaticAssets(request, env, context);
 }
 
-function isAssetUrl(url: string) {
-  const { pathname } = new URL(url);
-  return pathname.startsWith("/assets/");
+function isAssetUrl(request: Request) {
+  const { pathname } = new URL(request.url);
+  return pathname.startsWith("/some/base-url/assets/");
 }
 
 export default {

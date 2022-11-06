@@ -1,4 +1,5 @@
-import React, { ReactNode, Suspense } from "react";
+import React, { ReactNode, Suspense, useId } from "react";
+import "./Gallery.css";
 import { images } from "../../../constants";
 
 export const Gallery = ({
@@ -9,7 +10,6 @@ export const Gallery = ({
   filter?: string | null;
 }) => {
   const filtered = images.filter((i) => !filter || i.tags.includes(filter));
-  const Lag = lag();
 
   return (
     <div className="container">
@@ -26,35 +26,31 @@ export const Gallery = ({
           </Lag>
         </Suspense>
         {filtered.length > 0 &&
-          filtered.map((img, i) => {
-            const Lag = lag();
-            return (
-              <Suspense key={i}>
-                <Lag delay={delay * (i + 1)}>
-                  <GalleryItem src={img.name} tags={img.tags} />
-                </Lag>
-              </Suspense>
-            );
-          })}
+          filtered.map((img, i) => (
+            <Suspense key={i}>
+              <Lag delay={delay * (i + 1)}>
+                <GalleryItem src={img.name} tags={img.tags} />
+              </Lag>
+            </Suspense>
+          ))}
       </div>
     </div>
   );
 };
 
-const lag = () => {
-  let loading = true;
+const loadings: string[] = [];
 
-  return (props: { delay: number; children: ReactNode }) => {
-    if (loading)
-      throw new Promise((r) => {
-        setTimeout(() => {
-          loading = false;
-          r(true);
-        }, props.delay * 1000);
-      });
+const Lag = (props: { delay: number; children: ReactNode }) => {
+  const id = useId();
+  if (!loadings.includes(id))
+    throw new Promise((r) => {
+      setTimeout(() => {
+        loadings.push(id);
+        r(true);
+      }, props.delay * 1000);
+    });
 
-    return <>{props.children}</>;
-  };
+  return <>{props.children}</>;
 };
 
 const GalleryItem = (props: { src: string; tags: string[] }) => {

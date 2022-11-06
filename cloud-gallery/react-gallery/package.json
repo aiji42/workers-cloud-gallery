@@ -1,22 +1,26 @@
 {
-  "name": "react-gallery",
-  "description": "Simple React gallery container component",
+  "name": "react-example",
+  "private": true,
+  "type": "module",
   "scripts": {
+    "prebuild": "npm run -w helpers build",
+    "build": "vite build",
     "start": "npx wrangler dev --local",
     "deploy": "npx wrangler publish"
   },
-  "devDependencies": {
-    "@cloudflare/workers-types": "^3.14.1",
-    "@types/react": "^18.0.25",
-    "@types/react-dom": "^18.0.8",
+  "dependencies": {
+    "@cloudflare/kv-asset-handler": "^0.2.0",
+    "@vitejs/plugin-react": "^2.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "typescript": "4.7.4"
+    "vite": "^3.2.2",
+    "vite-plugin-ssr": "^0.4.44",
+    "wrangler": "^2.1.15"
   },
-  "engines": {
-    "node": ">=14"
-  },
-  "license": "",
-  "private": true,
-  "type": "module"
+  "devDependencies": {
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.8",
+    "@cloudflare/workers-types": "^3.18.0",
+    "typescript": "^4.8.4"
+  }
 }
