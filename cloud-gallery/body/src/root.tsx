@@ -5,6 +5,7 @@ import { getCookie } from "helpers";
 
 export default component$(() => {
   useStylesScoped$(styles);
+  const react = getCookie("react");
   const cache = getCookie("fragment-cache");
 
   return (
@@ -18,25 +19,36 @@ export default component$(() => {
         </a>
         <FragmentPlaceholder name="filter" />
       </div>
+
       <div class="gallery-fragment">
         <a
-          href="https://cloud-gallery-react-gallery.aiji422990.workers.dev/"
+          href={
+            react === "true"
+              ? "https://cloud-gallery-react-gallery.aiji422990.workers.dev/"
+              : "https://cloud-gallery-gallery.aiji422990.workers.dev/"
+          }
           class="seam-link"
         >
-          react-gallery
+          {react === "true" ? "react-gallery" : "gallery"}
         </a>
-        <FragmentPlaceholder
-          name="react-gallery"
-          cacheConfig={
-            cache === "true" ? { maxAge: 60, revalidate: 10 } : undefined
-          }
-        />
-        {/*<FragmentPlaceholder*/}
-        {/*	name="gallery"*/}
-        {/*	cacheConfig={*/}
-        {/*		cache === "true" ? { maxAge: 60, revalidate: 10 } : undefined*/}
-        {/*	}*/}
-        {/*/>*/}
+        {react === "true" ? (
+          <>
+            <p className="center">&darr; Using React &darr;</p>
+            <FragmentPlaceholder
+              name="react-gallery"
+              cacheConfig={
+                cache === "true" ? { maxAge: 60, revalidate: 10 } : undefined
+              }
+            />
+          </>
+        ) : (
+          <FragmentPlaceholder
+            name="gallery"
+            cacheConfig={
+              cache === "true" ? { maxAge: 60, revalidate: 10 } : undefined
+            }
+          />
+        )}
       </div>
     </div>
   );

@@ -54,13 +54,12 @@ export const Slider = component$(() => {
       "fragment-cache",
       JSON.stringify((e.target as HTMLInputElement).checked)
     );
+    document.location.reload();
   });
 
-  const cacheRef = useRef<HTMLInputElement>();
-  useClientEffect$(() => {
-    if (getCookie("fragment-cache") === "true") {
-      if (cacheRef.current) cacheRef.current.checked = true;
-    }
+  const handleFragmentReact$ = $((e: Event) => {
+    saveCookie("react", JSON.stringify((e.target as HTMLInputElement).checked));
+    document.location.reload();
   });
 
   return (
@@ -88,8 +87,8 @@ export const Slider = component$(() => {
       <div class="seam-options-container">
         <label className="label">
           <input
-            ref={cacheRef}
             type="checkbox"
+            checked={getCookie("fragment-cache") === "true"}
             onChange$={handleFragmentCache$}
           />
           Activate fragment cache
@@ -101,7 +100,15 @@ export const Slider = component$(() => {
             id="enable-seams-input"
             onChange$={handleShowSeams$}
           />
-          Show Seams
+          Show seams
+        </label>
+        <label className="label">
+          <input
+            type="checkbox"
+            checked={getCookie("react") === "true"}
+            onChange$={handleFragmentReact$}
+          />
+          Use react
         </label>
       </div>
     </div>
