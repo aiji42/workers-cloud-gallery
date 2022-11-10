@@ -1,5 +1,4 @@
 import React, { ReactNode, Suspense } from "react";
-import "./Gallery.css";
 import { images } from "../../../constants";
 import { usePageContext } from "./PageContext";
 
@@ -11,11 +10,14 @@ export const Gallery = ({ delay }: { delay: number }) => {
   const Lag = makeLag();
 
   return (
-    <div className="gallery-container">
-      <div className="spinner-container">
-        <span id="spinner" className="spinner"></span>
+    <div className="mt-11 w-[65vw]">
+      <div className="flex justify-center">
+        <span
+          id="spinner"
+          className="w-8 h-8 border-4 border-gray-700 rounded-full border-b-transparent inline-block box-border animate-spin"
+        />
       </div>
-      <div className="cloud-grid">
+      <div className="grid grid-cols-[repeat(auto-fit,_minmax(min(18rem,_100%),_18rem))] justify-items-center justify-center gap-4">
         {filtered.length === 0 && (
           <div>No matching photos. Try another filter</div>
         )}
@@ -67,15 +69,17 @@ const GalleryItem = (props: {
   basePath: string;
 }) => {
   return (
-    <div className="gallery-item">
+    <div className="relative overflow-hidden rounded-3xl w-72">
       <img
-        className="gallery-image"
+        className="w-full h-auto"
         alt="cloud picture"
         src={`${props.basePath}${props.src}`}
         width={300}
         height={450}
       />
-      <div className="tags">{props.tags.join(", ")}</div>
+      <div className="absolute bottom-4 left-4 font-bold text-base bg-gray-700 text-white p-1 rounded">
+        {props.tags.join(", ")}
+      </div>
     </div>
   );
 };

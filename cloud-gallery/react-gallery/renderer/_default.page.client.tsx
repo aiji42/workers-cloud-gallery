@@ -1,6 +1,7 @@
 import React from "react";
 import { hydrateRoot } from "react-dom/client";
 import { PageContextProvider } from "../pages/componnts/PageContext";
+import "./index.css";
 
 export const render = async (pageContext: any) => {
   const {
