@@ -6,15 +6,8 @@ async function handleFetch(
   env: Record<string, unknown>,
   context: ExecutionContext
 ) {
-  const url = new URL(request.url);
-  url.pathname = url.pathname.replace(
-    /^\//,
-    url.searchParams.get("base") ?? "/"
-  );
-  const proxyReq = new Request(url, request);
-
-  if (!isAssetUrl(proxyReq)) {
-    const response = await handleSsr(proxyReq, env, context);
+  if (!isAssetUrl(request)) {
+    const response = await handleSsr(request, env, context);
     if (response !== null) return response;
   }
   return handleStaticAssets(request, env, context);

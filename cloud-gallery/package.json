@@ -18,12 +18,14 @@
     "check:lint": "npm run lint --workspaces --if-present",
     "check:format": "npm run check-format --workspaces --if-present",
     "deploy": "npm run deploy --workspaces --if-present",
-    "format": "npm run format --workspaces --if-present"
+    "format": "npm run format --workspaces --if-present",
+    "postinstall": "patch-package"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^7.4.0",
+    "patch-package": "^6.5.0",
     "prettier": "^2.7.1",
     "wrangler": "^2.0.28"
   },

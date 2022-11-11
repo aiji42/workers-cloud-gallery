@@ -5,9 +5,11 @@ import { images } from "../../../constants";
 export const Gallery = ({
   delay,
   filter,
+  baseAssets,
 }: {
   delay: number;
   filter?: string | null;
+  baseAssets?: string | null;
 }) => {
   const filtered = images.filter((i) => !filter || i.tags.includes(filter));
   const Lag = makeLag();
@@ -32,7 +34,11 @@ export const Gallery = ({
             return (
               <Suspense key={i}>
                 <Lag delay={delay * (i + 1)}>
-                  <GalleryItem src={img.name} tags={img.tags} />
+                  <GalleryItem
+                    src={img.name}
+                    tags={img.tags}
+                    baseAssets={baseAssets ?? ""}
+                  />
                 </Lag>
               </Suspense>
             );
@@ -57,14 +63,17 @@ const makeLag = () => {
   };
 };
 
-const GalleryItem = (props: { src: string; tags: string[] }) => {
+const GalleryItem = (props: {
+  src: string;
+  tags: string[];
+  baseAssets: string;
+}) => {
   return (
     <div className="gallery-item">
       <img
         className="gallery-image"
         alt="cloud picture"
-        // @ts-ignore
-        src={`${import.meta.env.BASE_URL}${props.src}`}
+        src={`${props.baseAssets}${props.src}`}
         width={300}
         height={450}
       />

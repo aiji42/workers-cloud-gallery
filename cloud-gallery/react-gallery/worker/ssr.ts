@@ -5,11 +5,14 @@ export const handleSsr = async (
   env: Record<string, unknown>,
   context: ExecutionContext
 ) => {
+  const url = new URL(request.url);
+
   const pageContextInit = {
     urlOriginal: request.url,
     request,
     env,
     context,
+    _runtimeBaseAssets: url.searchParams.get("base"),
   };
   const pageContext = await renderPage(pageContextInit);
   const { httpResponse } = pageContext;

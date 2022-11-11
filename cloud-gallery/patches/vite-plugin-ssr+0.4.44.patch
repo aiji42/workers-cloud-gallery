@@ -1,0 +1,13 @@
+diff --git a/node_modules/vite-plugin-ssr/dist/cjs/node/renderPage/getPageAssets.js b/node_modules/vite-plugin-ssr/dist/cjs/node/renderPage/getPageAssets.js
+index 572353a..b292ea3 100644
+--- a/node_modules/vite-plugin-ssr/dist/cjs/node/renderPage/getPageAssets.js
++++ b/node_modules/vite-plugin-ssr/dist/cjs/node/renderPage/getPageAssets.js
+@@ -53,7 +53,7 @@ async function getPageAssets(pageContext, clientDependencies, clientEntries, isP
+         });
+     });
+     pageAssets = pageAssets.map((pageAsset) => {
+-        const baseUrlAssets = pageContext._baseAssets || pageContext._baseUrl;
++        const baseUrlAssets = pageContext._runtimeBaseAssets || pageContext._baseAssets || pageContext._baseUrl;
+         pageAsset.src = (0, utils_1.prependBaseUrl)((0, utils_1.normalizePath)(pageAsset.src), baseUrlAssets);
+         return pageAsset;
+     });
