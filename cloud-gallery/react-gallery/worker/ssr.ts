@@ -6,13 +6,17 @@ export const handleSsr = async (
   context: ExecutionContext
 ) => {
   const url = new URL(request.url);
+  const { base, ...searchParams } = Object.fromEntries(
+    url.searchParams.entries()
+  );
 
   const pageContextInit = {
     urlOriginal: request.url,
     request,
     env,
     context,
-    _runtimeBaseAssets: url.searchParams.get("base"),
+    searchParams,
+    _runtimeBaseAssets: base ?? null,
   };
   const pageContext = await renderPage(pageContextInit);
   const { httpResponse } = pageContext;

@@ -1,17 +1,13 @@
 import React, { ReactNode, Suspense } from "react";
 import "./Gallery.css";
 import { images } from "../../../constants";
+import { usePageContext } from "./PageContext";
 
-export const Gallery = ({
-  delay,
-  filter,
-  baseAssets,
-}: {
-  delay: number;
-  filter?: string | null;
-  baseAssets?: string | null;
-}) => {
-  const filtered = images.filter((i) => !filter || i.tags.includes(filter));
+export const Gallery = ({ delay }: { delay: number }) => {
+  const { params, basePath } = usePageContext<{ filter?: string }>();
+  const filtered = images.filter(
+    (i) => !params.filter || i.tags.includes(params.filter)
+  );
   const Lag = makeLag();
 
   return (
@@ -34,11 +30,13 @@ export const Gallery = ({
             return (
               <Suspense key={i}>
                 <Lag delay={delay * (i + 1)}>
-                  <GalleryItem
-                    src={img.name}
-                    tags={img.tags}
-                    baseAssets={baseAssets ?? ""}
-                  />
+                  <a href={`/${i}`}>
+                    <GalleryItem
+                      src={img.name}
+                      tags={img.tags}
+                      basePath={basePath ?? ""}
+                    />
+                  </a>
                 </Lag>
               </Suspense>
             );
@@ -66,14 +64,14 @@ const makeLag = () => {
 const GalleryItem = (props: {
   src: string;
   tags: string[];
-  baseAssets: string;
+  basePath: string;
 }) => {
   return (
     <div className="gallery-item">
       <img
         className="gallery-image"
         alt="cloud picture"
-        src={`${props.baseAssets}${props.src}`}
+        src={`${props.basePath}${props.src}`}
         width={300}
         height={450}
       />
