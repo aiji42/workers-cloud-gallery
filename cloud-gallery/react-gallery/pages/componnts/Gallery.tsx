@@ -3,9 +3,9 @@ import { images } from "../../../constants";
 import { usePageContext } from "./PageContext";
 
 export const Gallery = ({ delay }: { delay: number }) => {
-  const { params, basePath } = usePageContext<{ filter?: string }>();
+  const { params, basePath } = usePageContext<{ tag?: string }>();
   const filtered = images.filter(
-    (i) => !params.filter || i.tags.includes(params.filter)
+    (i) => !params.tag || i.tags.includes(params.tag)
   );
   const Lag = makeLag();
 
