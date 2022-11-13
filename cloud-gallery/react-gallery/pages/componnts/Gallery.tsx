@@ -10,7 +10,7 @@ export const Gallery = ({ delay }: { delay: number }) => {
   const Lag = makeLag();
 
   return (
-    <div className="mt-11 w-[65vw]">
+    <div className="mt-4 w-[65vw]">
       <p className="font-bold text-base text-center mb-2">⚛️ Using React ⚛️</p>
       <div className="flex justify-center">
         <span
