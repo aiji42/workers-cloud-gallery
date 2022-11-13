@@ -77,7 +77,7 @@ const GalleryItem = (props: {
         width={300}
         height={450}
       />
-      <div className="absolute bottom-4 left-4 font-bold text-base bg-gray-700 text-white p-1 rounded">
+      <div className="absolute bottom-4 left-4 font-bold text-base bg-zinc-700 text-white p-1 rounded">
         {props.tags.join(", ")}
       </div>
     </div>
