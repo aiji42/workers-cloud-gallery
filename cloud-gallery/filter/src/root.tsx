@@ -148,7 +148,7 @@ export const SearchResults = component$(
                 props.state.inputValue = result;
               }}
             >
-              <a class="link" href={`?tag=${result}`}>
+              <a class="link" href={`/?tag=${result}`}>
                 {result}
               </a>
             </li>
