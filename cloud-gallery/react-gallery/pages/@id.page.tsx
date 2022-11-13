@@ -8,9 +8,13 @@ export const Page = ({
 }) => {
   const { basePath } = usePageContext<{ id: string }>();
   return (
-    <div>
-      <img src={(basePath ?? "") + image.name} />
-      <p>{image.tags.join(", ")}</p>
+    <div className="mt-11 w-[65vw] flex justify-center">
+      <div className="relative">
+        <img src={(basePath ?? "") + image.name} className="rounded-3xl" />
+        <div className="absolute bottom-4 left-4 font-bold text-base bg-gray-700 text-white p-1 rounded">
+          {image.tags.join(", ")}
+        </div>
+      </div>
     </div>
   );
 };
