@@ -11,6 +11,7 @@ export const Gallery = ({ delay }: { delay: number }) => {
 
   return (
     <div className="mt-11 w-[65vw]">
+      <p className="font-bold text-base text-center mb-2">⚛️ Using React ⚛️</p>
       <div className="flex justify-center">
         <span
           id="spinner"

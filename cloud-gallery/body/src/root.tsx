@@ -32,17 +32,14 @@ export default component$(() => {
           {react === "true" ? "react-gallery" : "gallery"}
         </a>
         {react === "true" ? (
-          <>
-            <p className="center">&darr; Using React &darr;</p>
-            <FragmentPlaceholder
-              name="react-gallery"
-              cacheConfig={
-                cache === "true"
-                  ? { maxAge: 24 * 3600, revalidate: 60 }
-                  : undefined
-              }
-            />
-          </>
+          <FragmentPlaceholder
+            name="react-gallery"
+            cacheConfig={
+              cache === "true"
+                ? { maxAge: 24 * 3600, revalidate: 60 }
+                : undefined
+            }
+          />
         ) : (
           <FragmentPlaceholder
             name="gallery"
