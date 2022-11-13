@@ -10,7 +10,8 @@ The original repository is here. https://github.com/cloudflare/workers-web-exper
 I have extended this Cloudflare Workers micro-frontend.
 - 🔑 Implemented layered cache with KV
 - ⚛️ Changed one of the fragments to React (the original uses Qwik)
+- 🗺️ Implemented routing and navigation
 
 https://cloud-gallery.aiji422990.workers.dev/
 
-Furthermore I am currently trying to implement routing and navigation 💪
+Furthermore I am currently trying to implement fragment navigation 💪
