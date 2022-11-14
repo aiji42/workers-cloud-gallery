@@ -1,21 +1,14 @@
 import { handleSsr } from "./ssr";
-import { handleStaticAssets } from "./static-assets";
 
 async function handleFetch(
   request: Request,
   env: Record<string, unknown>,
   context: ExecutionContext
 ) {
-  if (!isAssetUrl(request)) {
-    const response = await handleSsr(request, env, context);
-    if (response !== null) return response;
-  }
-  return handleStaticAssets(request, env, context);
-}
+  const response = await handleSsr(request, env, context);
+  if (!response) throw new Error("Response is null");
 
-function isAssetUrl(request: Request) {
-  const { pathname } = new URL(request.url);
-  return pathname.includes("/assets/");
+  return response;
 }
 
 export default {
